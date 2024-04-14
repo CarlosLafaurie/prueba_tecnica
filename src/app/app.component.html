@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="app.component.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+  <nav id="nav" class="navbar">
+      <a class="navbar-brand" href="/">
+        <img  id="logo" src="https://previews.123rf.com/images/dimajarm/dimajarm1711/dimajarm171100432/90945945-un-icono-del-globo-terr%C3%A1queo-logo-de-vector-tierra-s%C3%ADmbolo-global-de-web-negro.jpg" width="50" height="50" style="border-radius: 100%;">
+        <b id="titleNav">Rest countries</b></a>
+        <input id="search" class="form-control me-2" type="text" [(ngModel)]="searchTerm" (ngModelChange)="applyFilter()" placeholder="Buscar" autocomplete="off">
+  </nav>
+
+
+  <div class="card-container">
+    <div *ngFor="let country of displayedCountries" class="card" style="width: 18rem;" (click)="openModal(country)">
+      <img id="flags" [src]="country.flags.png" alt="Flag">
+      <div class="card-body">
+        <p>Nombre del País: {{ country.name.common }}</p>
+        <p>Capital: {{ country.capital }}</p>
+        <p>Idiomas: {{ country.languages.join(', ') }}</p>
+        <p>Monedas: {{ getCurrencyNames(country.currencies) }}</p>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal" [style.display]="modalOpen ? 'block' : 'none'">
+    <div class="modal-content">
+      <span class="close" (click)="closeModal()">&times;</span>
+      <h2>Detalles del país</h2>
+      <p *ngIf="selectedCountry"><strong>Nombre:</strong> {{ selectedCountry.name.official }}</p>
+      <p *ngIf="selectedCountry"><strong>Contiente:</strong> {{ selectedCountry.region }}</p>
+      <p *ngIf="selectedCountry"><strong>Subregión:</strong> {{ selectedCountry.subregion }}</p>
+      <p *ngIf="selectedCountry"><strong>Población:</strong> {{ selectedCountry.population }}</p>
+      <p *ngIf="selectedCountry"><strong>Idiomas:</strong> {{ selectedCountry.languages.join(', ') }}</p>
+      <p *ngIf="selectedCountry"><strong>Fronteras:</strong> {{ selectedCountry.borders.join(', ') }}</p>
+      <p *ngIf="selectedCountry"><strong>Latitud:</strong> {{ selectedCountry.latlng[0] }}, <strong>Longitud:</strong> {{ selectedCountry.latlng[1] }}</p>
+   </div>
+  </div>
+
+  <div class="content-container">
+  <div class="pagination">
+    <button (click)="setPage(currentPage - 1)" [disabled]="currentPage === 1">Anterior</button>
+    <button *ngFor="let page of totalPagesArray()" (click)="setPage(page)" [class.active]="page === currentPage">{{ page }}</button>
+    <button (click)="setPage(currentPage + 1)" [disabled]="currentPage === totalPages()">Siguiente</button>
+  </div>
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+</body>
+</html>
